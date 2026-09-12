@@ -8,7 +8,7 @@ import 'package:frontend/services/upstox_search_data_service.dart';
 
 class OptionSearchController extends ChangeNotifier {
 
-  
+
   final UpstoxSearchDataService searchDataService = UpstoxSearchDataService();
 
 

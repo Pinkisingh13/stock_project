@@ -26,15 +26,15 @@ class SearchScreenState extends State<SearchScreen> {
   }
 
   void syncSearchField() {
-    final query = optionSearchController.query;
+    final currentQuery = optionSearchController.query;
 
-    if (searchController.text == query) {
+    if (searchController.text == currentQuery) {
       return;
     }
 
     searchController.value = TextEditingValue(
-      text: query,
-      selection: TextSelection.collapsed(offset: query.length),
+      text: currentQuery,
+      selection: TextSelection.collapsed(offset: currentQuery.length),
     );
   }
 

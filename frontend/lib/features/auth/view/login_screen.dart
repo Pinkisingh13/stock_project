@@ -36,6 +36,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     final authController = context.watch<AuthController>();
 
     return Scaffold(
