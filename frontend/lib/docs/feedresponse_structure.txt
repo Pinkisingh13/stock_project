@@ -1,0 +1,91 @@
+FeedResponse
+│
+├── type
+│   ├── initial_feed   → first complete snapshot
+│   ├── live_feed      → later live updates
+│   └── market_info    → market-status frame
+│
+├── feeds                              Map<String, Feed>
+│   │
+│   └── "NSE_FO|47294"                 selected option instrument key
+│       │
+│       └── Feed
+│           │
+│           ├── requestMode            full_d5
+│           │
+│           └── fullFeed
+│               │
+│               └── marketFF           MarketFullFeed for option/F&O
+│                   │
+│                   ├── ltpc
+│                   │   ├── ltp        last traded price
+│                   │   ├── ltt        last trade time
+│                   │   ├── ltq        last trade quantity
+│                   │   └── cp         previous close
+│                   │
+│                   ├── marketLevel
+│                   │   └── bidAskQuote  D5 market depth list
+│                   │       ├── bidQ
+│                   │       ├── bidP
+│                   │       ├── askQ
+│                   │       └── askP
+│                   │
+│                   ├── optionGreeks
+│                   │   ├── delta
+│                   │   ├── theta
+│                   │   ├── gamma
+│                   │   ├── vega
+│                   │   └── rho
+│                   │
+│                   ├── marketOHLC
+│                   │   └── ohlc
+│                   │       ├── 1d      daily candle
+│                   │       └── I1      one-minute candle
+│                   │
+│                   ├── atp            average traded price
+│                   ├── vtt            total traded volume
+│                   ├── oi             open interest
+│                   ├── iv             implied volatility
+│                   ├── tbq            total bid quantity
+│                   └── tsq            total ask quantity
+│
+├── currentTs                          Upstox server timestamp
+│
+└── marketInfo                         present for market_info frames
+
+
+
+
+
+
+| Response type | When it comes | Main data inside |
+|---|---|---|
+| `initial_feed` | Once, immediately after your subscribe request succeeds | First complete snapshot for the selected instrument: LTP, previous close, D5 bid/ask depth, Greeks, OHLC candles, OI, volume, total bid/ask quantity, etc. |
+
+| `live_feed` | Repeatedly after the initial snapshot, whenever Upstox sends new market data | Latest/updated option values for the subscribed instrument. Your UI uses these to update LTP, bid/ask, OI, volume, and change live. |
+
+| `market_info` | When Upstox sends exchange/segment status information | `marketInfo`, such as segment market status. It is not an option-price tick, and `feeds` can be empty. We ignore it. |
+
+
+
+initial_feed
+→ feeds["NSE_FO|47294"]
+→ fullFeed
+→ marketFF
+→ complete first option data
+
+
+live_feed
+→ feeds["NSE_FO|47294"]
+→ fullFeed
+→ marketFF
+→ new option values for UI
+
+
+market_info
+→ marketInfo
+→ exchange-status data only
+→ return; // ignored in our app
+
+
+currentTs is the Upstox server timestamp for that response frame.

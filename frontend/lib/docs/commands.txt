@@ -1,0 +1,10 @@
+protoc --dart_out=lib/generated MarketDataFeed.proto
+
+MarketDataFeed.pb.dart:  Contains Dart classes such as FeedResponse, Feed, MarketFullFeed, LTPC, Quote, etc.
+
+MarketDataFeed.pbenum.dart: Contains enums such as:
+Type.initial_feed
+Type.live_feed
+Type.market_info
+
+MarketDataFeed.pbjson.dart: Contains protobuf metadata/descriptors. We normally do not use this file directly in app code.
